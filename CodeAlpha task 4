@@ -1,0 +1,37 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+data = pd.read_csv("Advertising.csv")
+print("Dataset Shape:", data.shape)
+print(data.head())
+princoefficients = pd.DataFrame({"Feature": X.columns, "Impact on Sales": model.coef_})
+print("\nImpact of Advertising Spend:\n", coefficients)t("\nMissing values:\n", data.isnull().sum())
+print("\nData types:\n", data.dtypes)
+plt.figure(figsize=(6,4))
+sns.heatmap(data.corr(), annot=True, cmap="coolwarm")
+plt.title("Correlation between Features and Sales")
+plt.show()
+X = data[['TV', 'Radio', 'Newspaper']]   # Advertising spend
+y = data['Sales']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+print("\nModel Performance:")
+print("R2 Score:", r2_score(y_test, y_pred))
+print("MSE:", mean_squared_error(y_test, y_pred))
+plt.figure(figsize=(6,4))
+plt.scatter(y_test, y_pred, color="blue")
+plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], color="red") # Perfect line
+plt.xlabel("Actual Sales")
+plt.ylabel("Predicted Sales")
+plt.title("Actual vs Predicted Sales")
+plt.show()
+print("\nInsights:")
+print("TV and Radio have higher impact on sales compared to Newspaper.")
+print("Businesses should focus more on TV & Radio ads for better sales returns.")
+print("Newspaper spend has very low correlation with sales, so ROI is weak.")
+
