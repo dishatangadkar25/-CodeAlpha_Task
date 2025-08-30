@@ -1,0 +1,28 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.read_csv("Unemployment in India.csv")
+df.columns = df.columns.str.strip()
+df = df[['Date', 'Region', 'Estimated Unemployment Rate (%)']]
+df['Date'] = pd.to_datetime(df['Date'], dayfirst=True)
+df['Month'] = df['Date'].dt.to_period('M')
+monthly = df.groupby('Month')['Estimated Unemployment Rate (%)'].mean()
+plt.figure(figsize=(10,5))
+monthly.plot(marker='o')
+plt.title("Unemployment Rate Trend in India")
+plt.xlabel("Month")
+plt.ylabel("Unemployment Rate (%)")
+plt.show()
+pre_covid = monthly[:'2020-02'].mean()
+during_covid = monthly['2020-03':'2020-06'].mean()
+print("Average Unemployment Rate")
+print("Pre-COVID (till Feb 2020):", round(pre_covid,2), "%")
+print("During COVID (Mar-Jun 2020):", round(during_covid,2), "%")
+print("Increase due to COVID:", round(during_covid - pre_covid,2), "percentage points")
+df['Month_Number'] = df['Date'].dt.month
+seasonal = df.groupby('Month_Number')['Estimated Unemployment Rate (%)'].mean()
+plt.figure(figsize=(8,5))
+seasonal.plot(kind='bar', color="skyblue")
+plt.title("Average Unemployment by Month")
+plt.xlabel("Month (1=Jan ... 12=Dec)")
+plt.ylabel("Unemployment Rate (%)")
+plt.show()
